@@ -1,45 +1,57 @@
 # Mvrad Digital Live Sports Stremio Addon
 
-Sports-only Stremio addon foundation by **Mvrad Digital**.
+A sports-focused Stremio addon and Azerbaijani-first installation website for Mvrad Digital.
 
-## Included
+## Architecture
 
-- Stremio manifest
-- Live sports catalog foundation
-- Football / Basketball / Tennis / UFC-MMA / Formula 1 / Boxing categories
-- Azerbaijani, English and Turkish localization files
-- Provider abstraction for authorized stream sources
-- Health endpoint
-- Node.js + Express deployment foundation
+```text
+mvrad-digital-live-sports-addon/
+├── addon/       # Node.js Stremio addon
+└── website/     # Static landing/install page
+```
 
-## Important
+The website creates a one-click Stremio installation URL:
 
-This version intentionally contains demo events and an empty provider implementation.
+`stremio://YOUR-ADDON-DOMAIN/manifest.json`
 
-Only add sports data and streams that you are authorized to access, use and redistribute.
+## Run the addon
 
-## Run locally
-
-Requires Node.js 18+.
+Requirements: Node.js 18+
 
 ```bash
+cd addon
 npm install
 npm start
 ```
 
-Open:
+The default manifest is:
 
 `http://localhost:7000/manifest.json`
 
-Health:
+## Configure the website
 
-`http://localhost:7000/health`
+Open `website/app.js` and change:
 
-## Next
+```js
+const ADDON_URL = "https://YOUR-ADDON-DOMAIN";
+```
 
-1. Connect an authorized sports schedule/data API.
-2. Normalize live events.
-3. Add authorized stream providers.
-4. Add caching and health checks.
-5. Deploy to Cloudflare/VPS.
-6. Build the Mvrad-branded install website.
+The install button will then point to:
+
+`stremio://YOUR-ADDON-DOMAIN/manifest.json`
+
+## Deployment
+
+Recommended production setup:
+
+- Host the Node.js addon on a Node-compatible service/VPS.
+- Host the static website on Cloudflare Pages.
+- Put the addon domain behind Cloudflare when appropriate.
+
+Cloudflare Pages is ideal for the static website; the addon server itself needs a runtime capable of running the Node.js application.
+
+## Stream providers
+
+The repository intentionally contains no third-party unauthorized stream scraper or redistribution logic. Add only data/streams you are authorized to access and redistribute.
+
+Provider modules use a normalized interface so additional authorized providers can be added later.
