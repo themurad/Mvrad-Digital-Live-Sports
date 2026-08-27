@@ -1,57 +1,144 @@
-# Mvrad Digital Live Sports Stremio Addon
+<div align="center">
 
-A sports-focused Stremio addon and Azerbaijani-first installation website for Mvrad Digital.
+<img src="worker/assets/mvrad-logo.png" width="120" alt="Mvrad Digital">
 
-## Architecture
+# Mvrad Digital Live Sports
+
+### 🇦🇿 Azərbaycan dili dəstəyi ilə müasir Stremio idman əlavəsi
+
+[![Install in Stremio](https://img.shields.io/badge/⚡%20STREMIO--YA%20ƏLAVƏ%20ET-25D875?style=for-the-badge&logo=stremio&logoColor=07111F)](#quraşdırma)
+[![Node](https://img.shields.io/badge/Node.js-18%2B-07111F?style=for-the-badge&logo=node.js&logoColor=25D875)](https://nodejs.org/)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-Workers-07111F?style=for-the-badge&logo=cloudflare&logoColor=32D8FF)](https://workers.cloudflare.com/)
+
+**Mvrad Digital Live Sports** — yalnız idmana fokuslanan, Azərbaycan dili ilə hazırlanmış Stremio addon layihəsidir.
+
+</div>
+
+---
+
+## 🏆 Nədir?
+
+Mvrad Digital Live Sports Stremio daxilində canlı idman məzmununu vahid interfeysdə təqdim etmək üçün hazırlanır.
+
+**Kateqoriyalar**
+
+| ⚽ Futbol | 🏀 Basketbol | 🎾 Tennis |
+|---|---|---|
+| 🥊 UFC / MMA | 🏎️ Formula 1 | 🥋 Boks |
+
+### ✨ Xüsusiyyətlər
+
+- 🇦🇿 Azərbaycan dili
+- 🌍 Çoxdilli metadata üçün hazır arxitektura
+- ⚡ Bir kliklə Stremio quraşdırması
+- 🏟️ Yalnız idman məzmunu
+- 🧩 Modul provider sistemi
+- ☁️ Cloudflare Workers üçün hazır runtime
+- 📱 Mobil uyğun Mvrad landing page
+- 🌙 Premium dark-sports dizaynı
+- 🔌 Gələcək provider-lərin əlavə edilməsi üçün təmiz API
+
+---
+
+## ⚡ Quraşdırma
+
+> **Production URL deploy edildikdən sonra bu düymə birbaşa Stremio tətbiqini açır.**
+
+### [⚡ STREMIO-YA ƏLAVƏ ET](#)
+
+`stremio://YOUR-DEPLOYED-ADDON-DOMAIN/manifest.json`
+
+Stremio addon quraşdırma keçidləri `stremio://.../manifest.json` formatından istifadə edir. citehttps://github.com/Stremio/stremio-addon-sdk/blob/master/docs/advanced.md
+
+---
+
+## 🎨 Mvrad Design System
+
+**Visual direction**
+
+```text
+Background     #050B14
+Panel          #0A1422
+Deep Panel     #0D1B2B
+Neon Green     #25D875
+Emerald        #119B59
+Cyan           #32D8FF
+Blue           #168CFF
+```
+
+Dizayn məqsədi: **premium sports dashboard + modern streaming product**, böyük logo və həddindən artıq neon əvəzinə balanslaşdırılmış yaşıl/cyan işıqlandırma.
+
+---
+
+## 🧠 Arxitektura
+
+```text
+                    ┌─────────────────────┐
+                    │   Mvrad Web Page    │
+                    │  Install / Discover │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │       Stremio       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   /manifest.json    │
+                    └──────────┬──────────┘
+                               │
+                 ┌─────────────┴─────────────┐
+                 ▼                           ▼
+        ┌────────────────┐          ┌────────────────┐
+        │ Sports Catalog │          │ Stream Resolver │
+        └────────────────┘          └───────┬────────┘
+                                            │
+                                  ┌─────────┴─────────┐
+                                  ▼                   ▼
+                           Provider A            Provider B
+                           (authorized)          (authorized)
+```
+
+Provider sistemi qəsdən modul saxlanılıb. Yalnız istifadə və yayım hüququ olan mənbələr əlavə edilməlidir.
+
+---
+
+## 📁 Repository
 
 ```text
 mvrad-digital-live-sports-addon/
-├── addon/       # Node.js Stremio addon
-└── website/     # Static landing/install page
+│
+├── README.md
+│
+├── worker/
+│   ├── src/
+│   │   └── index.js
+│   ├── assets/
+│   │   └── mvrad-logo.png
+│   ├── package.json
+│   ├── wrangler.toml
+│   └── .gitignore
+│
+└── website/
+    └── README.md
 ```
 
-The website creates a one-click Stremio installation URL:
+---
 
-`stremio://YOUR-ADDON-DOMAIN/manifest.json`
+## 🔐 Provider policy
 
-## Run the addon
+Bu repository üçüncü tərəf saytlarından icazəsiz yayım linklərini çıxaran scraper/proxy daxil etmir.
 
-Requirements: Node.js 18+
+Provider interface real, hüquqi olaraq istifadəsinə icazə verilən idman məlumatı və stream mənbələrini əlavə etməyə hazırdır.
 
-```bash
-cd addon
-npm install
-npm start
-```
+---
 
-The default manifest is:
+<div align="center">
 
-`http://localhost:7000/manifest.json`
+### Mvrad Digital
+**Live Sports. One place.**
 
-## Configure the website
+🇦🇿 Built with Azerbaijani-first UX.
 
-Open `website/app.js` and change:
-
-```js
-const ADDON_URL = "https://YOUR-ADDON-DOMAIN";
-```
-
-The install button will then point to:
-
-`stremio://YOUR-ADDON-DOMAIN/manifest.json`
-
-## Deployment
-
-Recommended production setup:
-
-- Host the Node.js addon on a Node-compatible service/VPS.
-- Host the static website on Cloudflare Pages.
-- Put the addon domain behind Cloudflare when appropriate.
-
-Cloudflare Pages is ideal for the static website; the addon server itself needs a runtime capable of running the Node.js application.
-
-## Stream providers
-
-The repository intentionally contains no third-party unauthorized stream scraper or redistribution logic. Add only data/streams you are authorized to access and redistribute.
-
-Provider modules use a normalized interface so additional authorized providers can be added later.
+</div>
